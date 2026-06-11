@@ -1,0 +1,22 @@
+### 
+
+POST http://localhost:8080/api/auth/signup HTTP/1.1
+X-API-Version: 1
+Content-Type: application/json
+
+{
+  "username": "sergio",
+  "email": "sergioidarraga2110@gmail.com",
+  "password": "sergio123"
+}
+
+### 
+
+POST http://localhost:8080/api/auth/signin HTTP/1.1
+X-API-Version: 1
+Content-Type: application/json
+
+{
+  "email": "sergioidarraga2110@gmail.com",
+  "password": "sergio123"
+}

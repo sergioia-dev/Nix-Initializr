@@ -1,0 +1,77 @@
+@article{Kanthed2023,
+   abstract = {Containerization technologies have transformed software development and operations by offering lightweight, portable, and scalable environments for running applications across diverse infrastructures. Two of the most prominent container engines in this space are Docker and Podman. While both aim to facilitate packaging, distribution, and execution of software via containers, the underlying differences in their architectures produce unique strengths and limitations for modern workflows. Notably, Docker’s centralized daemon architecture offers well-established tooling and an expansive ecosystem, whereas Podman’s daemonless and rootless model addresses pressing security concerns and reduces single points of failure. This white paper provides an in-depth comparison of Docker and Podman, focusing on their architectural underpinnings, security implications, performance benchmarks, ecosystem maturity, and industry examples. By integrating recent academic research, best practices, and industry insights, the paper presents a comprehensive solution approach for organizations evaluating containerization platforms. With particular attention to security, efficiency, and regulatory compliance, we propose strategies and recommendations that not only aid in deciding between Docker and Podman but also guide the broader container adoption process in DevOps pipelines. This paper contributes novel insights to the growing body of knowledge on container-based workflows, aiming to empower informed decision-making and innovative implementations in the fast-evolving domain of cloud-native technologies.},
+   author = {Surbhi Kanthed},
+   doi = {10.54660/.ijmrge.2023.4.4.1139-1146},
+   issue = {4},
+   journal = {International Journal of Multidisciplinary Research and Growth Evaluation},
+   pages = {1139-1146},
+   publisher = {Anfo Publication House},
+   title = {Docker vs. Podman: Architecture Differences and Their Impact on Modern Workflows},
+   volume = {4},
+   year = {2023}
+}
+@techReport{Segulja2020,
+   abstract = {We analyze the fundamental performance impact of enforcing a fixed thread communication order to achieve deterministic execution. Our analysis consists of three parts, performed on a real system using the SPLASH-2 and PARSEC benchmarks. First, we quantify the effect that various sources of non-determinism have on program execution. We find that thread communication is the prevalent source of non-determinism and that it sometimes affects program output. Second, we divorce the implementation overhead of a system imposing a specific communication order from the impact of enforcing this order. We show that this fundamental cost of determinism is small (slowdown of 4\% on average and 33\% in the worst case). Finally, we analyze this cost under perturbed execution conditions. We find that demanding determinism when threads face such conditions can cause almost 2x slowdown.},
+   author = {Cedomir Segulja and Tarek S Abdelrahman},
+   isbn = {4860852648},
+   institution = {University of Toronto},
+   keywords = {()},
+   title = {What is the Cost of Determinism?},
+   url = {https://wodet.cs.washington.edu/wp-content/uploads/2014/02/wodet2014-final4.pdf},
+   year = {2020}
+}
+@inproceedings{Cordeiro2025,
+   abstract = {This paper presents a Systematic Mapping Study (SMS) on reproducibility in Software Engineering (SE), analyzing definitions, procedures, investigations, solutions, artifacts, and evaluation assessments. The research explores how reproducibility is defined, applied, and investigated, identifying several approaches and solutions. The final set of studies considered 25 primary studies, grouping the definitions of reproducibility into categories such as method, repeatability, probability, and ability. The application procedures are categorized into method, architecture, container, technique, framework, environment, notebook, toolkit, and benchmark. The investigation of reproducibility is analyzed through workflows, approaches, prototypes, methods, measures, methodologies, technologies, case studies, and frameworks. Solutions to reproducibility problems include environments, tools, benchmarks, initiatives, methodologies, notebooks, and containers. The artifacts considered include tools, environments, scenarios, datasets, models, diagrams, notebooks, algorithms, codes, representation structures, methodologies, containers, repositories, sequences, and workflows. Reproducibility assessment is performed using methods, experiments, measurements, processes, and factors. We also discuss future research opportunities. The results aim to benefit SE researchers and practitioners by providing an overview of organizing and providing reproducible research projects and artifacts, in addition to pointing out research opportunities related to reproducibility in the area.},
+   author = {André F.R. Cordeiro and Edson Oliveira},
+   doi = {10.5220/0013456000003929},
+   isbn = {9789897587498},
+   issn = {21844992},
+   booktitle = {International Conference on Enterprise Information Systems, ICEIS - Proceedings},
+   keywords = {Reproducibility,Research Opportunities,Review,Software Engineering Research,Systematic Mapping},
+   pages = {364-371},
+   publisher = {Science and Technology Publications, Lda},
+   title = {Reviewing Reproducibility in Software Engineering Research},
+   volume = {2},
+   year = {2025}
+}
+@techReport{Dolstra2006,
+   author = {E Dolstra},
+   isbn = {9039341303},
+   institution = {Ultrecht University},
+   month = {1},
+   title = {The purely functional software deployment model},
+   url = {http://hdl.handle.net/1874/7540Rightshttps://www.uu.nl/en/university-library/license-and-reuse-conditions},
+   year = {2006}
+}
+@techReport{Zwinger2025,
+   abstract = {Software deployment suffers from numerous problems pertaining, for example, to reproducibility and dependency resolution. Many of these problems have been successfully solved by the purely functional approach to package management implemented in the Nix project. However, Nix does not solve all issues, and it does introduces some novel problems of its own. Therefore, the aim of this thesis is to conduct a literature review on the current state of research on Nix and to determine the direction of future research.
+The first part of this paper explores the problems historically faced in different areas of software deployment, e.g., irreproducibility and dependency resolution issues. The main four categories of software deployment tools analyzed are build systems, package managers, configuration management, and development environments. Popular software from each category serve as case studies to illustrate the problems. The second part introduces Nix and explains the methods utilized to solve some of the problems introduced in the earlier part.
+Because Nix is the first large project to utilize the purely functional approach, it is far from a perfect solution. Thus, the third part is dedicated to analyzing the new problems that Nix introduces, as well as old problems, which Nix has been unable to solve, such as trust and granular incremental builds. Furthermore, some proposed state of the art solutions put forth by the Nix community are discussed.},
+   author = {Matias Zwinger},
+   month = {12},
+   title = {Nix: A Solution With Problems},
+   url = {https://arxiv.org/abs/2604.11398},
+   year = {2025}
+}
+@article{Hausch2025,
+   abstract = {Ensuring reproducibility of scientific software is crucial for the advancement of research and the validation of scientific findings. However, achieving reproducibility in software-intensive scientific projects is often challenging due to dependencies, system configurations, and software environments. In this paper, we present a possible solution for these challenges by utilizing Nix and NixOS. Nix is a package manager and functional language, which guarantees that a package and all its dependencies can be built reproducibly. NixOS is a purely functional Linux distribution, built on top of Nix, which enables the build of reproducible systems including configuration files, packages, and their dependencies. We study the potential of Nix and NixOS by a case study on the reproducibility of the preCICE ecosystem. preCICE is a coupling library for partitioned multiphysics simulations. The ecosystem includes diverse legacy solvers, adapters, and language bindings besides the coupling library itself making it a challenging and representative testcase. We demonstrate how to create a reproducible and self-contained environment for this ecosystem and discuss the benefits and limitations of using Nix and NixOS.},
+   author = {Max Hausch and Simon Hauser and Benjamin Uekermann},
+   doi = {10.14279/eceasst.v83.2613},
+   issn = {18632122},
+   journal = {Electronic Communications of the EASST},
+   keywords = {Nix,NixOS,Reproducibility},
+   publisher = {Universitatsbibliothek TU Berlin},
+   title = {Improving reproducibility of scientific software using Nix/NixOS: A case study on the preCICE ecosystem},
+   volume = {83},
+   url = {https://www.eceasst.org/index.php/eceasst/article/view/2613},
+   year = {2025}
+}
+@book{AdrienDevresse2015,
+   author = {Adrien Devresse and Fabien Delalondre and Felix Schürmann},
+   isbn = {9781450340120},
+   month = {11},
+   publisher = {ACM Digital Library},
+   title = {Nix based fully automated workflows and ecosystem to guarantee scientific result reproducibility across software environments and systems},
+   url = {https://dl.acm.org/doi/abs/10.1145/2830168.2830172},
+   year = {2015}
+}

@@ -1,0 +1,102 @@
+\documentclass[stu,]{apa7} % papel carta (cambia a a4paper si es A4)
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[spanish]{babel}   
+\usepackage{csquotes}         
+\usepackage[backend=biber,style=apa]{biblatex} % Citas y bibliografía con APA 7 (usando biber)
+\addbibresource{references.bib}
+
+\title{Reproducibilidad y Determinismo en Ambientes de Desarrollo de Software Multiplataforma en Sistemas tipo Unix}
+\author{Sergio Idarraga Aguirre}
+\affiliation{Corporación Universitaria Remington}
+\course{Facultad de Ingenierías \\ Tecnología en Desarrollo de Software}
+\professor{Mónica María Córdoba Castrillon \\ Proyecto de Grado}
+\duedate{\today}
+
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+
+Este es mi Resumen
+
+
+\noindent\textbf{Palabras Clave:}
+\begin{itemize}
+  \item Reproducibilidad: La reproducibilidad es definida por la habilidad de replicar un proceso o un experimento por otras personas o un equipo independiente si se siguen los mismos pasos. \cite{Cordeiro2025}. 
+
+\item Determinismo: El determinismo sé idéntica por la cualidad de un programa que a partir de sus entradas siempre se va a ejecutar en el mismo orden y dando el mismo exacto resultado. \cite{Segulja2020}.
+
+  \item Software Multiplataforma:
+  \item  Contenerización:
+\end{itemize}
+\end{abstract}
+
+\tableofcontents
+
+\listoftables
+
+\listoffigures
+
+
+\section{Planteamiento del Problema}
+La reproducibilidad y el determinismo son un problema común en los equipos de desarrollo de software multiplataforma \enquote{Desktop, Web y Móvil}, ya que alcanzarla implica lidiar con la alta complejidad y variabilidad que traen los sistemas actuales. Factores como diferencias en el entorno de ejecución, versiones de dependencias, configuraciones, datos de entrada o incluso el orden de ejecución de procesos hacen que un mismo comportamiento sea difícil de replicar de manera consistente. 
+
+Esta falta de reproducibilidad y determinismo genera pérdida de tiempo, dificultades en la depuración, errores no deterministas y una menor confianza en los resultados del sistema, a la vez la complejidad a la hora del montaje de entornos en los cuales llevar a cabo el desarrollo y el despliegue de aplicaciones aumenta al no poder replicar los mismos ambientes múltiples veces. Lo que conlleva a la pregunta  \textquestiondown Qué estrategias de fijación de dependencias y virtualización permiten alcanzar un grado alto de reproducibilidad y determinismo en un entorno de desarrollo multiplataforma?
+
+\section{Objetivos}
+
+\subsection{Objetivo General}
+Desarrollar una aplicación web que facilite la configuración de entornos de desarrollo reproducibles y deterministas para proyectos multiplataforma (escritorio, web y móvil) mediante la integración de herramientas existentes como contenedores y gestores de dependencias.
+
+
+\subsection{Objetivos Específicos}
+
+\begin{itemize}
+  \item Analizar las principales fuentes de falta de reproducibilidad y determinismo en entornos de desarrollo multiplataforma (escritorio, web y móvil).
+
+  \item Determinar cómo las herramientas Nix, Docker y Podman pueden combinarse alcanzando la reproducibilidad y el determinismo en entornos multiplataforma.
+  \item Implementar un módulo en la aplicación web que genere automáticamente archivos de configuración (flake.nix, docker-compose.yml y ENVIRONMENT.md) a partir de los parámetros definidos por el usuario.
+
+
+\end{itemize}
+
+\section{Metodología}
+
+\subsection{Diseño del Estudio}
+
+Se optó por un enfoque de investigación aplicada de tipo desarrollo tecnológico, complementado con un estudio de caso múltiple para evaluar la reproducibilidad. El trabajo se estructuró en cuatro fases: (1) análisis de fuentes de no determinismo, (2) selección y combinación de herramientas, (3) implementación de la aplicación web generadora de configuraciones y (4) pruebas de reproducibilidad y determinismo.
+
+\subsection{Identificación de fuentes de no determinismo en entornos multiplataforma}
+
+En la actualidad la configuración de ambientes para el desarrollo adopta un paradigma imperativo el cual consiste en instalar paquete por paquete hasta alcanzar el resultado deseado, esta modelo tiende a volverse más complejo al paso del tiempo al usuario olvidar el orden de ejecución de la instalación o los paquetes que fueron instalados    
+
+
+\subsection{Selección de herramientas para reproducibilidad y determinismo}
+
+\subsection{Desarrollo de la aplicación web generadora}
+
+\subsection{Evaluación de la reproducibilidad y determinismo}
+
+En este estudio el enfoque de investigación aplicado estuvo basado en la observación de equipos de desarrollo, las dificultades que tuvieron a la hora de montar sus ambientes de desarrollo con relación también al lenguaje o  lenguajes utilizados.
+
+También se tuvo en cuenta las versiones de software utilizados debido a que estas pueden variar en cada máquina lo cual puede llevar a error al cambio entre versiones de software(dependencias, formas de utilizar el software y entre otros).
+
+Usualmente, a la hora de un equipo de desarrollo empezar un proyecto cada ocupante del equipo debe ajustar su máquina para la ejecución del software en desarrollo esto implica tanto como compiladores, interpretadores, IDE, herramientas para pruebas, contenedores o hasta máquinas virtuales esto trae una complejidad a la hora de correr el software, ya que todas estas herramientas son instaladas una vez por máquina y muchas veces a la hora de actualizar una versión del software el anterior es simplemente borrado o sobreescrito lo que no nos permite tener múltiples versiones del mismo software y a la vez trabajar en múltiples proyectos que utilizan diferentes versiones del mismo software.
+
+\section{Resultados y Discusión}
+
+Estos son los resultados
+
+\section{Dedicatoria}
+Esta es mi Dedicatoria
+
+\section{Agradecimientos}
+Estos son mis Agradecimientos
+
+% --- Bibliografía ---
+\printbibliography
+
+\end{document}
