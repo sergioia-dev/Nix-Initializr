@@ -80,6 +80,26 @@
               in
               "${script}/bin/run-spring";
           };
+
+          backend-test = {
+            type = "app";
+            program =
+              let
+                script = pkgs.writeShellScriptBin "run-spring-test" ''
+                  if [[ "$(basename "$PWD")" == "backend" ]]; then
+                    if [ -f .env ]; then
+                      set -a
+                      source .env
+                      set +a
+                    fi
+                    export JAVA_HOME="${pkgs.openjdk25.home}"
+                    ./mvnw test
+                    cd ..;
+                  fi
+                '';
+              in
+              "${script}/bin/run-spring-test";
+          };
         };
       }
     );

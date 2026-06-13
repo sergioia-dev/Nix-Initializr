@@ -17,6 +17,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import nixdocs.backend.configuration.CustomOAuth2UserService;
+import nixdocs.backend.configuration.OAuth2AuthenticationSuccessHandler;
 import nixdocs.backend.configuration.filter.RateLimitingFilter;
 
 @Configuration
@@ -33,6 +39,12 @@ public class SecurityConfig {
   @Autowired
   private RateLimitingFilter rateLimitingFilter;
 
+  @Autowired
+  private CustomOAuth2UserService customOAuth2UserService;
+
+  @Autowired
+  private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+
   public SecurityConfig() {
   }
 
@@ -42,6 +54,18 @@ public class SecurityConfig {
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(
             auth -> auth.requestMatchers("/api/auth/**").permitAll().anyRequest().authenticated())
+        .oauth2Login(oauth2 -> oauth2
+            .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
+            .successHandler(oAuth2AuthenticationSuccessHandler)
+            .failureHandler((request, response, exception) -> {
+              exception.printStackTrace();
+              response.setContentType("application/json");
+              response.setCharacterEncoding("UTF-8");
+              String message = exception.getMessage() != null
+                  ? exception.getMessage().replace("\"", "'")
+                  : exception.getClass().getSimpleName();
+              response.getWriter().write("{\"error\":\"" + message + "\"}");
+            }))
         .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
         .addFilterBefore(rateLimitingFilter, UsernamePasswordAuthenticationFilter.class)
         .formLogin(form -> form.disable());
@@ -64,5 +88,18 @@ public class SecurityConfig {
   @Bean
   public PasswordEncoder passwordEncoder() {
     return new BCryptPasswordEncoder();
+  }
+
+  @Bean
+  public CorsConfigurationSource corsConfigurationSource() {
+    CorsConfiguration config = new CorsConfiguration();
+    config.setAllowCredentials(true);
+    config.setAllowedOrigins(java.util.List.of("http://localhost:5173"));
+    config.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+    config.setAllowedHeaders(java.util.List.of("*"));
+
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    source.registerCorsConfiguration("/**", config);
+    return source;
   }
 }
