@@ -65,6 +65,18 @@ class AuthServiceImplementation implements AuthService {
   }
 
   @Override
+  public String checkStatus(String accessToken) {
+    if (accessToken == null || !jwtService.validateToken(accessToken)) {
+      return null;
+    }
+    try {
+      return jwtService.extractSubject(accessToken);
+    } catch (ParseException e) {
+      return null;
+    }
+  }
+
+  @Override
   public SignInResponseDTO refreshAccessToken(String refreshToken) {
     try {
       String email = jwtService.extractSubject(refreshToken);

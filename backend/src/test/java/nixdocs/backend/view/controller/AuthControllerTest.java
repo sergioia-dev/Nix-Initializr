@@ -22,6 +22,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -150,6 +151,39 @@ class AuthControllerTest {
         .andExpect(cookie().path("accessToken", "/"))
         .andExpect(cookie().path("refreshToken", "/api/auth/refresh"))
         .andExpect(content().string(""));
+  }
+
+  // --- /status ---
+
+  @Test
+  void status_withMissingCookie_returns401() throws Exception {
+    mockMvc.perform(get("/api/auth/status")
+            .header("X-API-Version", "1"))
+        .andExpect(status().isUnauthorized())
+        .andExpect(jsonPath("$.status").value(401));
+  }
+
+  @Test
+  void status_withInvalidToken_returns401() throws Exception {
+    when(authService.checkStatus("bad-token")).thenReturn(null);
+
+    mockMvc.perform(get("/api/auth/status")
+            .header("X-API-Version", "1")
+            .cookie(new Cookie("accessToken", "bad-token")))
+        .andExpect(status().isUnauthorized())
+        .andExpect(jsonPath("$.status").value(401));
+  }
+
+  @Test
+  void status_withValidToken_returns200() throws Exception {
+    when(authService.checkStatus("good-token")).thenReturn("a@b.com");
+
+    mockMvc.perform(get("/api/auth/status")
+            .header("X-API-Version", "1")
+            .cookie(new Cookie("accessToken", "good-token")))
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.email").value("a@b.com"))
+        .andExpect(jsonPath("$.authenticated").value(true));
   }
 
   // --- /refresh ---

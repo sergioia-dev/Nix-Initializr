@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CookieValue;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,8 @@ import nixdocs.backend.DTO.SignInRequestDTO;
 import nixdocs.backend.DTO.SignInResponseDTO;
 import nixdocs.backend.DTO.SignUpDTO;
 import nixdocs.backend.business.service.AuthService;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -70,6 +73,16 @@ public class AuthController {
     return ResponseEntity.ok()
         .headers(buildCookieHeaders(tokens.accessToken(), tokens.refreshToken()))
         .build();
+  }
+
+  @GetMapping(path = "/status", version = "1")
+  public ResponseEntity<?> status(@CookieValue(name = "accessToken", required = false) String accessToken) {
+    String email = authService.checkStatus(accessToken);
+    if (email == null) {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+          .body(new HTTPResponseDTO(HttpStatus.UNAUTHORIZED.value(), "Unauthorized", "Not authenticated"));
+    }
+    return ResponseEntity.ok(Map.of("email", email, "authenticated", true));
   }
 
   private HttpHeaders buildCookieHeaders(String accessToken, String refreshToken) {

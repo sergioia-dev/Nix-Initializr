@@ -14,4 +14,6 @@ public interface AuthService {
 
   public SignInResponseDTO refreshAccessToken(String refreshToken);
 
+  public String checkStatus(String accessToken);
+
 }

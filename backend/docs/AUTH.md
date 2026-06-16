@@ -169,3 +169,49 @@ Returned when the `refreshToken` cookie is missing or empty.
 ```
 
 Returned when the refresh token is invalid, expired, malformed, or doesn't match the stored token.
+
+---
+
+## GET /api/auth/status
+
+Check whether the current access token cookie is valid. Returns the authenticated user's email.
+
+### Request Headers
+
+| Header | Value | Required |
+|---|---|---|
+| `X-API-Version` | `1` | Yes |
+
+### Request Cookies
+
+| Cookie | Required | Description |
+|---|---|---|
+| `accessToken` | Yes | JWT access token (set by `/signin` or `/refresh`) |
+
+No request body.
+
+### Success Response
+
+**Status:** `200 OK`
+
+```json
+{
+  "email": "user@example.com",
+  "authenticated": true
+}
+```
+
+### Error Responses
+
+**Status:** `401 Unauthorized`
+
+```json
+{
+  "timestamp": "2026-06-11T12:00:00.000",
+  "status": 401,
+  "error": "Unauthorized",
+  "message": "Not authenticated"
+}
+```
+
+Returned when the `accessToken` cookie is missing, invalid, or expired.
