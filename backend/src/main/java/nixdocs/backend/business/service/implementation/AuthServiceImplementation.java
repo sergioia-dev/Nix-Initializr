@@ -77,6 +77,15 @@ class AuthServiceImplementation implements AuthService {
   }
 
   @Override
+  public SignInResponseDTO handleOAuth2Login(String email) throws JOSEException {
+    String accessToken = jwtService.generateAccessToken(email);
+    String refreshToken = jwtService.generateRefreshToken(email);
+
+    jwtService.saveRefreshToken(email, refreshToken);
+    return new SignInResponseDTO(accessToken, refreshToken);
+  }
+
+  @Override
   public SignInResponseDTO refreshAccessToken(String refreshToken) {
     try {
       String email = jwtService.extractSubject(refreshToken);

@@ -16,4 +16,6 @@ public interface AuthService {
 
   public String checkStatus(String accessToken);
 
+  public SignInResponseDTO handleOAuth2Login(String email) throws JOSEException;
+
 }

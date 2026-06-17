@@ -1,28 +1,37 @@
 package nixdocs.backend.view.controller;
 
+import java.io.IOException;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.core.user.OAuth2User;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.nimbusds.jose.JOSEException;
+
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import nixdocs.backend.DTO.HTTPResponseDTO;
 import nixdocs.backend.DTO.SignInRequestDTO;
 import nixdocs.backend.DTO.SignInResponseDTO;
 import nixdocs.backend.DTO.SignUpDTO;
 import nixdocs.backend.business.service.AuthService;
 
-import java.util.Map;
-
 @RestController
 @RequestMapping("/api/auth")
-public class AuthController {
+public class AuthController implements AuthenticationSuccessHandler {
 
   @Value("${JWT_ACCESS_TOKEN_EXPIRATION}")
   private Long accessTokenExpiration;
@@ -83,6 +92,28 @@ public class AuthController {
           .body(new HTTPResponseDTO(HttpStatus.UNAUTHORIZED.value(), "Unauthorized", "Not authenticated"));
     }
     return ResponseEntity.ok(Map.of("email", email, "authenticated", true));
+  }
+
+  @Override
+  public void onAuthenticationSuccess(
+      HttpServletRequest request,
+      HttpServletResponse response,
+      Authentication authentication) throws IOException, ServletException {
+
+    OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+    String email = oAuth2User.getAttribute("email");
+
+    try {
+      SignInResponseDTO tokens = authService.handleOAuth2Login(email);
+
+      HttpHeaders headers = buildCookieHeaders(tokens.accessToken(), tokens.refreshToken());
+      for (String cookie : headers.get(HttpHeaders.SET_COOKIE)) {
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie);
+      }
+      response.setStatus(HttpServletResponse.SC_OK);
+    } catch (JOSEException e) {
+      throw new ServletException("Failed to generate JWT tokens", e);
+    }
   }
 
   private HttpHeaders buildCookieHeaders(String accessToken, String refreshToken) {
