@@ -7,7 +7,6 @@ import nixdocs.backend.DTO.SignInResponseDTO;
 import nixdocs.backend.DTO.SignUpDTO;
 import nixdocs.backend.business.service.AuthService;
 import nixdocs.backend.configuration.CustomOAuth2UserService;
-import nixdocs.backend.configuration.OAuth2AuthenticationSuccessHandler;
 import nixdocs.backend.configuration.security.JwtAuthenticationFilter;
 import nixdocs.backend.configuration.filter.RateLimitingFilter;
 
@@ -51,9 +50,6 @@ class AuthControllerTest {
 
   @MockitoBean
   private CustomOAuth2UserService customOAuth2UserService;
-
-  @MockitoBean
-  private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
 
   // --- /signup ---
 

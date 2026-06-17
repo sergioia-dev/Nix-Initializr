@@ -215,3 +215,54 @@ No request body.
 ```
 
 Returned when the `accessToken` cookie is missing, invalid, or expired.
+
+---
+
+## GitHub OAuth2 Login
+
+Initiates the OAuth2 authorization code flow with GitHub. On success, the user is redirected back and receives JWT access and refresh tokens as HTTP-only cookies (same as `/signin`).
+
+### Initiate Login
+
+Redirect the browser to:
+
+```
+GET /oauth2/authorization/github
+```
+
+No headers, cookies, or body required. The browser is redirected to GitHub for authorization.
+
+### Callback (handled by the backend)
+
+After the user authorizes on GitHub, the backend processes the callback at `/login/oauth2/code/github`. This is handled automatically by Spring Security — no manual request needed.
+
+### Success Response
+
+**Status:** `200 OK`
+
+No response body. Tokens are set as HTTP-only cookies:
+
+| Cookie | Path | Max-Age | HttpOnly | SameSite | Secure |
+|---|---|---|---|---|---|
+| `accessToken` | `/` | 90s | Yes | `Strict` | Yes |
+| `refreshToken` | `/api/auth/refresh` | 30d | Yes | `Strict` | Yes |
+
+- `accessToken` — short-lived JWT for authenticating subsequent requests (sent as `Authorization: Bearer <token>`)
+- `refreshToken` — long-lived JWT used to obtain a new access token via `/refresh`
+
+### Error Responses
+
+If the OAuth2 flow fails, a JSON error is returned:
+
+```json
+{
+  "error": "Email not available from GitHub. Ensure your GitHub account has a public email or the user:email scope is granted."
+}
+```
+
+Other possible errors:
+
+| Error | Cause |
+|---|---|
+| `Email not available from GitHub...` | The authenticated GitHub account has no public email or the `user:email` scope was denied |
+| `An account with this email already exists...` | A local (email/password) account with the same email already exists |

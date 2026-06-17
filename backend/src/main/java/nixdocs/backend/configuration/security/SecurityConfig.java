@@ -22,8 +22,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import nixdocs.backend.configuration.CustomOAuth2UserService;
-import nixdocs.backend.configuration.OAuth2AuthenticationSuccessHandler;
 import nixdocs.backend.configuration.filter.RateLimitingFilter;
+import nixdocs.backend.view.controller.AuthController;
 
 @Configuration
 @EnableWebSecurity
@@ -43,20 +43,20 @@ public class SecurityConfig {
   private CustomOAuth2UserService customOAuth2UserService;
 
   @Autowired
-  private OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
+  private AuthController authController;
 
   public SecurityConfig() {
   }
 
   @Bean
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-    http.csrf(csrf -> csrf.disable()).cors(cors -> cors.configure(http))
+    http.csrf(csrf -> csrf.disable()).cors(cors -> cors.configurationSource(corsConfigurationSource()))
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(
             auth -> auth.requestMatchers("/api/auth/**").permitAll().anyRequest().authenticated())
         .oauth2Login(oauth2 -> oauth2
             .userInfoEndpoint(userInfo -> userInfo.userService(customOAuth2UserService))
-            .successHandler(oAuth2AuthenticationSuccessHandler)
+            .successHandler(authController)
             .failureHandler((request, response, exception) -> {
               exception.printStackTrace();
               response.setContentType("application/json");
